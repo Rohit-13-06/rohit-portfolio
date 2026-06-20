@@ -992,6 +992,10 @@ body {
 }
 
 @media (max-width: 850px) {
+  .torii-container {
+    min-height: 520px;
+  }
+
   .horizontal-contact-form .fields-row {
     flex-direction: column;
     gap: 12px;
@@ -1004,7 +1008,8 @@ body {
   }
   
   .torii-form-overlay {
-    top: 25%;
+    top: 28%;
+    width: 85%;
   }
 }
 
@@ -1828,6 +1833,15 @@ body {
   .project-folder-icon {
     width: 150px;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+  }
+}
+
+@media (max-width: 500px) {
+  .projects-takeover-grid {
+    gap: 25px;
+  }
+  .project-folder-icon {
+    width: 115px;
   }
 }
 
