@@ -1,8 +1,5 @@
 import { Resend } from 'resend';
 
-// Initialize Resend with the API key from environment variables
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,6 +14,13 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Resend API key is not configured in Vercel environment variables. Please add it to your project settings in the Vercel dashboard and redeploy.' });
+  }
+
+  const resend = new Resend(apiKey);
 
   const { name, email, message } = req.body;
 
