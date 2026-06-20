@@ -22,7 +22,31 @@ export default async function handler(req, res) {
 
   const resend = new Resend(apiKey);
 
-  const { name, email, message } = req.body;
+  // Parse body manually if Vercel doesn't pre-parse it
+  let body = req.body;
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      body = {};
+    }
+  } else if (!body) {
+    try {
+      body = await new Promise((resolve, reject) => {
+        let chunks = [];
+        req.on('data', chunk => chunks.push(chunk));
+        req.on('end', () => {
+          const raw = Buffer.concat(chunks).toString();
+          resolve(raw ? JSON.parse(raw) : {});
+        });
+        req.on('error', reject);
+      });
+    } catch {
+      body = {};
+    }
+  }
+
+  const { name, email, message } = body || {};
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'All fields (name, email, message) are required.' });
