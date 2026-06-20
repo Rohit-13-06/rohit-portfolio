@@ -1,0 +1,2475 @@
+/* ==========================================================================
+   SCROLL-DRIVEN SPECIMEN - ROHIT YERRARAPU DESIGN SYSTEM
+   ========================================================================== */
+
+/* Local font-face definitions for Neue Montreal */
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('./assets/fonts/NeueMontreal-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('./assets/fonts/NeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('./assets/fonts/NeueMontreal-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('./assets/fonts/NeueMontreal-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+:root {
+  --font-sans: 'Outfit', sans-serif;
+  --font-mono: 'Space Grotesk', sans-serif;
+  --font-title: 'Neue Montreal', sans-serif;
+  
+  --bg-cream: #FAF6EE;
+  --bg-red: #8B0000;
+  --text-dark: #000000;
+  --text-cream: #FAF6EE;
+  --border-grey: rgba(0, 0, 0, 0.12);
+  --shadow-pill: rgba(0, 0, 0, 0.08) 0px 8px 30px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  cursor: url('./assets/metal_cursor_32.png'), auto !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-cream);
+}
+
+body {
+  width: 100%;
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  background-color: var(--bg-cream);
+  
+  /* Subtle Grid Lines Background (Fixed as user scrolls) */
+  background-image: 
+    linear-gradient(to right, var(--border-grey) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-grey) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+/* Soft white vignette overlay to fade grid lines towards borders */
+.vignette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, transparent 30%, rgba(250, 246, 238, 0.95) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+
+/* Fixed Cap overlay that scales & moves on scroll */
+.cap-fixed-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Cap 3D Flip Card layout */
+.cap-flip-card {
+  width: 500px;
+  height: 500px;
+  perspective: 1000px;
+}
+
+.cap-flip-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cap-front, .cap-back {
+  position: absolute;
+  backface-visibility: hidden;
+  object-fit: contain;
+}
+
+.cap-front {
+  width: 61.2%;
+  height: 61.2%;
+  top: 19.4%;
+  left: 19.4%;
+}
+
+.cap-back {
+  width: 98%;
+  height: 98%;
+  top: 1%;
+  left: 1%;
+  transform: rotateY(180deg);
+}
+
+/* Sections Layout */
+.section {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Section 1: Hero Landing */
+.section-one {
+  background: transparent;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.indicator-arrow {
+  width: 1px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.indicator-arrow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  animation: scroll-line-anim 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scroll-line-anim {
+  0% { transform: translateY(-100%); }
+  50%, 100% { transform: translateY(100%); }
+}
+
+/* Section 2: Logo Reveal / Skills */
+.section-two {
+  height: 200vh; /* Scroll space to keep logo stuck */
+  position: relative;
+  z-index: 5;
+}
+
+.section-two-content {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  will-change: filter;
+}
+
+.logo-reveal-subtitle {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 2.2vw, 30px);
+  color: var(--bg-red);
+  margin-top: -5px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  user-select: none;
+  pointer-events: none;
+}
+
+.logo-reveal-image {
+  max-width: 900px;
+  width: 90vw;
+  height: auto;
+  display: block;
+  margin: -40px auto 0 auto; /* Shifted up to compensate and center higher */
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Section 3: Takeover Card Container */
+.section-three-container {
+  height: auto; /* Reverted to auto to end the red card snug below content */
+  position: relative;
+  z-index: 10;
+}
+
+.takeover-card-sticky-wrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.takeover-card {
+  pointer-events: auto;
+  width: calc(100% - 100px);
+  margin: 0 auto;
+  height: auto; /* auto height so it hugs CurrentlyExploring cards */
+  background-color: var(--bg-red);
+  border-radius: 48px; /* Rounded corners on all sides */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 100px 40px 80px 40px; /* Reduced bottom padding */
+  margin-bottom: 80px; /* Space between the rounded red card and Section 5 */
+  overflow: visible;
+  will-change: transform, border-radius;
+}
+
+@media (max-width: 900px) {
+  .takeover-card {
+    width: calc(100% - 40px);
+    padding-top: 75px;
+  }
+}
+
+.card-content {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.takeover-card-heading-img {
+  max-width: 400px;
+  width: 56vw;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.takeover-card-bio {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1.6;
+  color: var(--text-cream);
+  text-align: center;
+  max-width: 950px;
+  width: 90%;
+  margin: -25px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.takeover-divider {
+  width: 100%;
+  max-width: 950px;
+  height: 1px;
+  background-color: rgba(250, 246, 238, 0.15); /* Soft semi-transparent beige line */
+  margin: 90px auto 0 auto;
+  border: none;
+}
+
+.takeover-card-signature-img {
+  max-width: 480px;
+  width: 64vw;
+  height: auto;
+  display: block;
+  margin: 50px auto 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.takeover-card-experience-img {
+  max-width: 430px;
+  width: 58vw;
+  height: auto;
+  display: block;
+  margin: 50px auto 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.takeover-card-education {
+  width: 100%;
+  max-width: 950px;
+  margin: -15px auto 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  color: var(--text-cream);
+  font-family: 'Neue Montreal', sans-serif;
+}
+
+.education-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.education-left {
+  flex: 1;
+}
+
+.education-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.education-title {
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.education-desc {
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.education-meta-bold {
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.education-meta-regular {
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .takeover-card-education {
+    margin-top: -15px;
+    gap: 30px;
+  }
+
+  .education-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .education-right {
+    text-align: left;
+  }
+}
+
+/* Section 4: Projects */
+.section-four {
+  background-color: var(--bg-cream);
+  padding: 100px 40px;
+  z-index: 5;
+}
+
+.section-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+}
+
+.project-card {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-num {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.project-name {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.project-desc {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Section 5: Contact */
+.section-five {
+  background-color: transparent;
+  padding: 100px 0 0 0;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.contact-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  width: 100%;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 0;
+  width: 100%;
+}
+
+/* Liquid Glass Form Styling */
+.liquid-glass-form {
+  position: relative;
+  max-width: 550px;
+  width: 100%;
+  background: rgba(250, 246, 238, 0.45); /* Translucent cream */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 28px;
+  padding: 32px 48px;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px) saturate(110%);
+  -webkit-backdrop-filter: blur(24px) saturate(110%);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .liquid-glass-form {
+    padding: 32px 24px;
+    border-radius: 20px;
+  }
+}
+
+.form-liquid-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.liquid-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+  animation: float-blob 12s infinite ease-in-out;
+}
+
+.blob-1 {
+  width: 250px;
+  height: 250px;
+  background-color: var(--bg-red);
+  top: -50px;
+  left: -50px;
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  width: 300px;
+  height: 300px;
+  background-color: #D4AF37; /* soft gold */
+  bottom: -80px;
+  right: -50px;
+  animation-delay: 3s;
+}
+
+.blob-3 {
+  width: 200px;
+  height: 200px;
+  background-color: #8A9A9A; /* slate blue */
+  top: 40%;
+  left: 30%;
+  animation-delay: 6s;
+}
+
+@keyframes float-blob {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.form-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.form-title {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.contact-form-header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.contact-form-heading-img {
+  max-width: 300px;
+  width: 80%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 16px;
+  color: var(--text-dark);
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  backdrop-filter: blur(5px);
+}
+
+.form-input::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.form-input:focus {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: var(--bg-red);
+  box-shadow: 0 8px 24px rgba(139, 0, 0, 0.06);
+}
+
+.form-textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+.form-submit-btn {
+  width: 100%;
+  background: var(--bg-red);
+  color: var(--text-cream);
+  border: none;
+  border-radius: 14px;
+  padding: 18px;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 10px 30px rgba(139, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.form-submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.form-submit-btn:hover {
+  background: #A00000;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(139, 0, 0, 0.3);
+}
+
+.form-submit-btn:hover::before {
+  left: 100%;
+}
+
+.form-submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* Form Success State */
+.form-success-message {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 20px;
+  animation: fade-in-success 0.5s ease-out;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(139, 0, 0, 0.1);
+  color: var(--bg-red);
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  animation: pop-scale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.form-success-message h4 {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--text-dark);
+}
+
+.form-success-message p {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.65);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.success-reset-btn {
+  background: transparent;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  color: var(--bg-red);
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.success-reset-btn:hover {
+  background: var(--bg-red);
+  color: var(--text-cream);
+  border-color: var(--bg-red);
+}
+
+@keyframes fade-in-success {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop-scale {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.contact-socials {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.social-link {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--bg-red);
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: var(--text-dark);
+}
+
+.torii-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100vw;
+  max-width: 100vw;
+  height: auto;
+  overflow: visible;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.torii-heading-overlay {
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(350px, 85vw, 1200px);
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.torii-form-overlay {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1100px;
+  z-index: 12;
+  pointer-events: auto;
+}
+
+.torii-socials-overlay {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+.torii-socials-overlay .social-link {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.torii-socials-overlay .social-link:hover {
+  color: #ffffff;
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
+.horizontal-contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.horizontal-contact-form .fields-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+}
+
+.horizontal-contact-form .fields-row .input-group {
+  flex: 1;
+}
+
+.horizontal-contact-form .fields-row .input-group.message-group {
+  flex: 1.8;
+}
+
+.horizontal-contact-form .form-input {
+  width: 100%;
+  height: 56px;
+  background: rgba(250, 246, 238, 0.45);
+  border: 1.5px solid var(--bg-red);
+  border-radius: 9999px;
+  padding: 0 28px;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 16px;
+  color: var(--text-dark);
+  outline: none;
+  backdrop-filter: blur(20px) saturate(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(110%);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.horizontal-contact-form .form-input::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.horizontal-contact-form .form-input:focus {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: var(--bg-red);
+  box-shadow: 
+    0 8px 24px rgba(139, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.horizontal-contact-form .form-submit-btn {
+  background: transparent;
+  color: var(--bg-red);
+  border: none;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 24px;
+}
+
+.horizontal-contact-form .form-submit-btn:hover {
+  color: var(--text-dark);
+  transform: translateY(-1px);
+}
+
+.horizontal-contact-form .form-submit-btn:active {
+  transform: translateY(0);
+}
+
+.horizontal-success-message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(250, 246, 238, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 16px 24px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.success-icon-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(139, 0, 0, 0.1);
+  color: var(--bg-red);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.horizontal-success-message p {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.success-reset-btn-small {
+  background: transparent;
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  color: var(--bg-red);
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.success-reset-btn-small:hover {
+  background: var(--bg-red);
+  color: var(--text-cream);
+  border-color: var(--bg-red);
+}
+
+@media (max-width: 850px) {
+  .horizontal-contact-form .fields-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .horizontal-contact-form .fields-row .input-group,
+  .horizontal-contact-form .fields-row .input-group.message-group {
+    width: 100%;
+    flex: none;
+  }
+  
+  .torii-form-overlay {
+    top: 25%;
+  }
+}
+
+@media (max-width: 600px) {
+  .horizontal-success-message {
+    flex-direction: column;
+    padding: 24px;
+    width: 100%;
+    max-width: 350px;
+  }
+}
+
+.torii-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  transform: translateY(120px);
+}
+
+.nav-fixed-container {
+  position: fixed;
+  top: 40px;
+  right: 65px;
+  z-index: 99;
+  pointer-events: auto;
+}
+
+.nav-icon-wrapper {
+  width: 115px;
+  height: 115px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+  transition: filter 0.3s ease;
+}
+
+.nav-icon-wrapper:hover .nav-icon-img {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+}
+
+/* Liquid Glass Dropdown Menu (Positioned to the left of the paper plane) */
+.nav-dropdown-tile {
+  position: absolute;
+  top: -10px;
+  right: calc(100% + 15px);
+  width: 200px;
+  background: rgba(250, 246, 238, 0.55); /* Frosty translucent cream */
+  border: 1.5px solid rgba(139, 0, 0, 0.15); /* Red/crimson boundary line */
+  border-radius: 24px;
+  padding: 16px;
+  box-shadow: 
+    0 20px 40px rgba(139, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+/* Floating blobs inside liquid glass dropdown menu */
+.nav-dropdown-tile::before,
+.nav-dropdown-tile::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nav-dropdown-tile::before {
+  width: 90px;
+  height: 90px;
+  background-color: var(--bg-red);
+  top: -15px;
+  left: -15px;
+  animation: nav-float-1 8s infinite ease-in-out;
+}
+
+.nav-dropdown-tile::after {
+  width: 110px;
+  height: 110px;
+  background-color: #D4AF37; /* soft gold */
+  bottom: -25px;
+  right: -25px;
+  animation: nav-float-2 10s infinite ease-in-out;
+}
+
+@keyframes nav-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, 12px) scale(1.1); }
+}
+
+@keyframes nav-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-12px, -8px) scale(0.9); }
+}
+
+.nav-dropdown-item {
+  position: relative;
+  z-index: 2;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--bg-red);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  text-align: center;
+}
+
+.nav-dropdown-item:hover {
+  background: var(--bg-red);
+  color: var(--text-cream);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.15);
+}
+
+@media (max-width: 900px) {
+  .nav-fixed-container {
+    top: 18px;
+    right: 32px;
+  }
+  .nav-icon-wrapper {
+    width: 78px;
+    height: 78px;
+  }
+  .nav-dropdown-tile {
+    top: -8px;
+    right: calc(100% + 10px);
+    width: 170px;
+    padding: 12px;
+    border-radius: 20px;
+  }
+  .nav-dropdown-item {
+    font-size: 13.5px;
+    padding: 8px 14px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN AND MOBILE ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 900px) {
+  .cap-flip-card {
+    width: 350px;
+    height: 350px;
+  }
+}
+
+/* ==========================================================================
+   INTERACTIVE SKILLS PLAYGROUND AND CAP STICKERS
+   ========================================================================== */
+.skills-playground {
+  width: 100%;
+  max-width: 950px;
+  margin: 15px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.skills-heading-img {
+  max-width: 420px;
+  width: 58vw;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.skills-subtitle {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: var(--text-cream);
+  opacity: 0.85;
+  margin: 15px auto 25px auto;
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.skills-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.control-btn {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--text-cream);
+  background: rgba(250, 246, 238, 0.08);
+  border: 1px solid rgba(250, 246, 238, 0.2);
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.control-btn:hover {
+  background: rgba(250, 246, 238, 0.18);
+  border-color: rgba(250, 246, 238, 0.4);
+  transform: translateY(-1px);
+}
+
+.control-btn:active {
+  transform: translateY(1px);
+}
+
+.control-btn.active {
+  background: var(--text-cream);
+  color: var(--bg-red);
+  border-color: var(--text-cream);
+}
+
+.playground-canvas {
+  width: 100%;
+  height: 1100px;
+  position: relative;
+  overflow: visible;
+  margin-top: 10px;
+  padding: 40px;
+}
+
+/* Draggable Cap Stickers */
+.draggable-cap {
+  width: 210px;
+  height: 210px;
+  margin-left: -105px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+  transition: filter 0.2s ease;
+}
+
+.picsart-cap {
+  width: 160px;
+  height: 160px;
+  margin-left: -80px;
+}
+
+.draggable-cap:active {
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.45));
+}
+
+.cap-sticker-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Floating cursor pill tooltip on cap hover */
+.cap-hover-pill {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-color: rgba(250, 246, 238, 0.95);
+  color: var(--bg-red);
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  will-change: transform;
+}
+
+
+@media (max-width: 768px) {
+  .playground-canvas {
+    height: 1350px;
+    padding: 20px;
+  }
+  .draggable-cap {
+    width: 140px;
+    height: 140px;
+    margin-left: -70px;
+  }
+  .picsart-cap {
+    width: 105px;
+    height: 105px;
+    margin-left: -52.5px;
+  }
+  .cap-hover-pill {
+    display: none !important;
+  }
+}
+
+.takeover-card-footer-graphic-img {
+  max-width: 560px;
+  width: 70vw;
+  height: auto;
+  display: block;
+  margin: 50px auto 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.takeover-card-projects-footer-img {
+  max-width: 560px;
+  width: 70vw;
+  height: auto;
+  display: block;
+  margin: 50px auto 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.takeover-card-projects-heading-img {
+  max-width: 360px; /* Slightly decreased from 430px */
+  width: 48vw;      /* Slightly decreased from 55vw */
+  height: auto;
+  display: block;
+  margin: 50px auto 0 auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   INTERACTIVE INTERNSHIP CARDS PLAYGROUND
+   ========================================================================== */
+.internships-section {
+  width: 100%;
+  max-width: 1100px;
+  margin: -15px auto 0 auto; /* Reduced from 60px to -15px to close the gap under the cursive graphic */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.internships-instruction {
+  margin-top: -35px; /* Pulls the instruction line up closer to the graphic */
+  margin-bottom: 28px; /* Compensates to keep the cards in the same place */
+  text-align: center;
+  z-index: 12;
+}
+
+.instruction-text {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--text-cream);
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.projects-instruction-text {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--text-cream);
+  opacity: 0.85;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+}
+
+.instruction-text.clickable {
+  cursor: pointer;
+}
+
+.instruction-text.clickable:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.internships-canvas {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+  margin-top: 10px;
+  padding: 20px;
+  transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.internships-canvas.stacked-state {
+  height: 330px; /* Increased from 120px to fit cards within document flow */
+}
+
+.internships-canvas.dispersed-state {
+  height: 1010px; /* Increased from 890px to fit vertical layout of larger cards */
+}
+
+/* 3D Flip Card Container */
+.internship-flip-container {
+  width: 800px; /* Increased from 420px to take up space of left and right */
+  height: 300px; /* Increased from 260px */
+  margin-left: -400px; /* Centering offset for 800px width */
+  perspective: 1500px;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.internship-card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 24px 32px 24px 64px; /* Extra left padding to clear the red margin line */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #FCF9F2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  user-select: none;
+  
+  /* Lined index card background with red margin line */
+  background-image: 
+    linear-gradient(to right, rgba(139, 0, 0, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 20px;
+  background-position: 48px 0, 0 0;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.internship-flip-container:hover .internship-card-face {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border-color: rgba(139, 0, 0, 0.2);
+}
+
+.card-front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  /* Lined index card back with black margin line instead */
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.12) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-position: 48px 0, 0 0;
+}
+
+.card-index-num {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px; /* Increased from 10px */
+  font-weight: 700;
+  color: rgba(139, 0, 0, 0.25);
+  letter-spacing: 0.05em;
+}
+
+/* Card Header */
+.card-header, .card-back-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px dashed rgba(139, 0, 0, 0.12);
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+}
+
+.card-back-header {
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 11px; /* Increased from 9px */
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--bg-red);
+  opacity: 0.8;
+}
+
+.card-duration {
+  font-family: var(--font-mono);
+  font-size: 11px; /* Increased from 9px */
+  font-weight: 500;
+  color: #666666;
+}
+
+/* Card Info */
+.card-company {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 26px; /* Increased from 22px */
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.2;
+}
+
+.card-role {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 17px; /* Increased from 14px */
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bg-red);
+  margin-top: 4px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.card-location {
+  font-family: var(--font-mono);
+  font-size: 12px; /* Increased from 10px */
+  color: #666666;
+  margin-bottom: 8px;
+}
+
+.card-desc-preview {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 15px; /* Increased from 13px */
+  line-height: 1.55;
+  color: #444444;
+  flex-grow: 1;
+}
+
+/* Back Tab Navigation */
+.card-back-tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  font-family: var(--font-mono);
+  font-size: 11px; /* Increased from 8px */
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #666666;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 4px 8px; /* Increased padding */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: #111111;
+}
+
+.tab-btn.active {
+  background: var(--bg-red);
+  color: #ffffff;
+  border-color: var(--bg-red);
+}
+
+/* Back Scrollable Content */
+.card-back-scrollable {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-top: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+.card-back-scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+.card-back-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.back-company-title {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 15px; /* Increased from 12px */
+  font-weight: 700;
+  color: #111111;
+}
+
+.back-section {
+  margin-bottom: 8px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px; /* Increased from 8.5px */
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #555555;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.achievements-list {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 13.5px; /* Increased from 11px */
+  line-height: 1.5;
+  color: #333333;
+  padding-left: 14px;
+}
+
+.achievements-list li {
+  margin-bottom: 5px;
+}
+
+.achievements-list.compact li {
+  margin-bottom: 2px;
+}
+
+/* Contributions List (KodeSpark) */
+.contributions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contribution-item {
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+  padding-bottom: 6px;
+}
+
+.contribution-item:last-child {
+  border-bottom: none;
+}
+
+.contribution-title {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 13.5px; /* Increased from 11px */
+  font-weight: 700;
+  color: var(--bg-red);
+  display: block;
+}
+
+.contribution-desc {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 12.5px; /* Increased from 10.5px */
+  line-height: 1.4;
+  color: #444444;
+  margin-top: 2px;
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.tech-pills-row {
+  display: flex;
+  gap: 4px;
+}
+
+.tech-badge-mini {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(139, 0, 0, 0.04);
+  color: var(--bg-red);
+  border: 1px solid rgba(139, 0, 0, 0.08);
+}
+
+.tech-badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tech-badge {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.04);
+  color: #222222;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.flip-hint {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #888888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.flip-hint:hover {
+  color: var(--bg-red);
+}
+
+@media (max-width: 768px) {
+  .internships-canvas.stacked-state {
+    height: 245px; /* Increased from 110px */
+  }
+  .internships-canvas.dispersed-state {
+    height: 740px;
+  }
+  .internship-flip-container {
+    width: 330px;
+    height: 220px;
+    margin-left: -165px;
+  }
+  .internship-card-face {
+    padding: 16px 16px 16px 40px;
+    background-position: 28px 0, 0 0;
+  }
+  .card-company {
+    font-size: 16px;
+  }
+  .card-role {
+    font-size: 11.5px;
+  }
+  .card-desc-preview {
+    font-size: 11px;
+  }
+}
+
+/* ==========================================================================
+   SCROLL-DRIVEN PROJECTS TAKEOVER SECTION
+   ========================================================================== */
+.projects-takeover-section {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.projects-takeover-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px 120px;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+}
+
+.project-takeover-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  will-change: transform, opacity;
+}
+
+.project-folder-icon {
+  width: 250px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.35));
+  transition: filter 0.3s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.project-takeover-card:hover .project-folder-icon {
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.5));
+}
+
+@media (max-width: 900px) {
+  .projects-takeover-section {
+    max-width: 480px;
+    padding: 20px;
+  }
+  .projects-takeover-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px;
+  }
+  .project-folder-icon {
+    width: 150px;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+  }
+}
+
+/* ==========================================================================
+   SCROLL-DRIVEN PROJECTS DETAIL OVERLAY MODAL (LIGHT BEIGE GRID THEME)
+   ========================================================================== */
+.project-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.project-modal-container {
+  max-width: 1200px;
+  width: 100%;
+  max-height: 85vh;
+  background-color: var(--bg-cream);
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: top left;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 3px solid var(--bg-red);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 40px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.project-modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+.project-modal-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+/* Top Control Bar */
+.project-modal-header-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.project-modal-meta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.project-modal-close-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-modal-close-btn:hover {
+  background-color: var(--bg-red);
+  color: var(--text-cream);
+  border-color: var(--bg-red);
+  transform: translateY(-1px) rotate(90deg);
+}
+
+.close-cross {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* Title Section with Icon */
+.project-modal-title-section-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 24px;
+  text-align: left;
+  width: 100%;
+}
+
+.project-modal-folder-icon {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.15));
+}
+
+.project-modal-title-section {
+  flex-grow: 1;
+}
+
+.project-modal-title {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: clamp(22px, 3vw, 36px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.project-modal-subtitle {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  color: var(--bg-red);
+  font-size: clamp(14px, 1.4vw, 17px);
+  margin-top: 8px;
+  opacity: 0.95;
+}
+
+.project-modal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.08);
+  margin-bottom: 35px;
+}
+
+/* Grid Layout */
+.project-modal-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 60px;
+  text-align: left;
+}
+
+.project-modal-col-left,
+.project-modal-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* Section Components */
+.project-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-modal-section-heading {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  color: var(--bg-red);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-left: 2px solid var(--bg-red);
+  padding-left: 12px;
+  margin-bottom: 8px;
+}
+
+.project-modal-body-text {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.75);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.project-modal-body-text.italic {
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Tags */
+.project-modal-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.project-modal-tag-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 16px;
+  letter-spacing: 0.02em;
+}
+
+.project-modal-tag-pill.tech {
+  background-color: rgba(139, 0, 0, 0.05);
+  border: 1px solid rgba(139, 0, 0, 0.22);
+  color: var(--bg-red);
+}
+
+.project-modal-tag-pill.skill {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* Impact Box Callout */
+.project-modal-impact-box {
+  background-color: rgba(139, 0, 0, 0.03);
+  border: 1px solid rgba(139, 0, 0, 0.12);
+  border-left: 3px solid var(--bg-red);
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.project-modal-impact-box .project-modal-section-heading {
+  border-left: none;
+  padding-left: 0;
+  margin-bottom: 6px;
+}
+
+/* Architecture Flowchart Nodes */
+.project-modal-architecture-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.architecture-flow-node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.architecture-flow-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #FCF9F2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 12px 18px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.architecture-flow-node:hover {
+  background-color: #FAF6EE;
+  border-color: rgba(139, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.architecture-node-icon {
+  font-size: 15px;
+}
+
+.architecture-node-name {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-dark);
+  text-align: left;
+}
+
+.architecture-flow-arrow {
+  margin: 2px 0;
+  display: flex;
+  justify-content: center;
+  color: rgba(139, 0, 0, 0.65);
+  animation: pulse-arrow 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-arrow {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  50% { opacity: 0.8; transform: translateY(2px); }
+}
+
+/* Bullets List */
+.project-modal-bullets {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+}
+
+.project-modal-bullets li {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.72);
+  line-height: 1.55;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 12px;
+}
+
+.project-modal-bullets li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.project-modal-bullets li strong {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.project-modal-mini-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Metrics Results Table */
+.project-modal-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.01);
+  margin-top: 6px;
+}
+
+.project-modal-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+}
+
+.project-modal-results-table th {
+  font-weight: 700;
+  color: var(--text-dark);
+  padding: 12px 16px;
+  font-size: 13.5px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.project-modal-results-table td {
+  padding: 12px 16px;
+  font-size: 13.5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.project-modal-results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.accuracy-val {
+  font-weight: 700;
+  color: var(--bg-red);
+}
+
+/* Features List */
+.project-modal-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-modal-feature-card {
+  background-color: #FCF9F2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.project-modal-feature-card:hover {
+  background-color: #FAF6EE;
+  border-color: rgba(139, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.feature-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.feature-card-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 9.5px;
+  color: var(--bg-red);
+  background-color: rgba(139, 0, 0, 0.06);
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.feature-card-title {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: 14.5px;
+}
+
+.feature-card-desc {
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.project-modal-feature-card.thin {
+  padding: 10px 14px;
+}
+
+.project-modal-feature-card.thin .feature-card-title {
+  font-size: 13.5px;
+  margin-bottom: 4px;
+}
+
+/* Responsive Modal Adjustments */
+@media (max-width: 950px) {
+  .project-modal-overlay {
+    padding: 15px;
+  }
+  
+  .project-modal-container {
+    max-height: 92vh;
+    padding: 24px;
+    border-radius: 16px;
+  }
+  
+  .project-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  
+  .project-modal-col-left,
+  .project-modal-col-right {
+    gap: 30px;
+  }
+  
+  .project-modal-close-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .project-modal-title-section-with-icon {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .project-modal-folder-icon {
+    width: 80px;
+  }
+}
+
+/* ==========================================================================
+   CURRENTLY EXPLORING SECTION STYLING
+   ========================================================================== */
+
+.currently-exploring-section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.currently-exploring-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.exploring-card {
+  position: relative;
+  background-color: #FCF9F2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 24px 32px 24px 64px; /* Extra left padding to clear the red margin line */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  user-select: none;
+  min-height: 300px;
+  
+  /* Ruled background style with red margin line */
+  background-image: 
+    linear-gradient(to right, rgba(139, 0, 0, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 20px;
+  background-position: 48px 0, 0 0;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.exploring-card:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border-color: rgba(139, 0, 0, 0.2);
+}
+
+.exploring-card-index {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(139, 0, 0, 0.25);
+  letter-spacing: 0.05em;
+}
+
+.exploring-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px dashed rgba(139, 0, 0, 0.12);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.exploring-card-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--bg-red);
+  opacity: 0.8;
+}
+
+.exploring-card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.exploring-card-title {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.2;
+}
+
+.exploring-card-desc {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444444;
+}
+
+.exploring-card-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 12px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.exploring-list-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #555555;
+  text-transform: uppercase;
+}
+
+.exploring-pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.exploring-pill {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(139, 0, 0, 0.04);
+  color: var(--bg-red);
+  border: 1px solid rgba(139, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.exploring-card:hover .exploring-pill {
+  background: rgba(139, 0, 0, 0.08);
+  border-color: rgba(139, 0, 0, 0.18);
+}
+
+@media (max-width: 900px) {
+  .currently-exploring-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .exploring-card {
+    min-height: auto;
+    padding: 16px 20px 16px 48px;
+    background-position: 36px 0, 0 0;
+  }
+  .exploring-card-title {
+    font-size: 18px;
+  }
+  .exploring-card-desc {
+    font-size: 13px;
+  }
+}
+
+
