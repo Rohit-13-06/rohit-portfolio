@@ -1012,6 +1012,20 @@ body {
     top: 28%;
     width: 85%;
   }
+
+  .torii-image {
+    transform: translateY(175px);
+  }
+
+  .torii-socials-overlay {
+    bottom: -10px;
+    gap: 45px;
+  }
+
+  .torii-socials-overlay .social-link {
+    font-size: 15px;
+    letter-spacing: 0.05em;
+  }
 }
 
 @media (max-width: 600px) {
