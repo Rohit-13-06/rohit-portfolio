@@ -78,7 +78,7 @@ export default function SkillsPlayground() {
         
         const gridWidth = cols * colWidth;
         const startX = -gridWidth / 2 + colWidth / 2;
-        const startY = isMobile ? 80 : 140; // Margin from top of the playground canvas to shift grid down
+        const startY = isMobile ? 20 : 50; // Margin from top of the playground canvas to shift grid down
         
         return {
           x: startX + col * colWidth,

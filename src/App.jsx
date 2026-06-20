@@ -140,8 +140,8 @@ function App() {
   const capRotateZ = useTransform(scrollYProgress1, RANGE_0_1, ROTATE_RANGE);
   
   // Cap translates from center of screen to the top-left corner
-  const capX = useTransform(scrollYProgress1, (value) => value * targetX);
-  const capY = useTransform(scrollYProgress1, (value) => value * targetY);
+  const capX = useTransform(scrollYProgress1, RANGE_0_1, [0, targetX]);
+  const capY = useTransform(scrollYProgress1, RANGE_0_1, [0, targetY]);
 
   // Scroll tracking for Section 2 (Logo Reveal)
   const { scrollYProgress: scrollYProgress2 } = useScroll({
@@ -177,10 +177,16 @@ function App() {
           className="nav-icon-wrapper"
           whileHover={{ scale: 1.1, rotate: 15 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
+          onClick={(e) => {
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+              e.stopPropagation();
+              setIsMenuOpen(prev => !prev);
+            } else {
+              const contactSection = document.getElementById('contact');
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+              }
             }
           }}
         >

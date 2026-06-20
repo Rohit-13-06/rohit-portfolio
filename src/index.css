@@ -117,6 +117,7 @@ body {
 .cap-front, .cap-back {
   position: absolute;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   object-fit: contain;
 }
 
