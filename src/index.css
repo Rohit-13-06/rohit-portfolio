@@ -1039,7 +1039,7 @@ body {
   }
 
   .torii-socials-overlay {
-    bottom: 35px;
+    bottom: -15px;
     gap: 45px;
   }
 
