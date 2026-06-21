@@ -107,11 +107,11 @@ function App() {
     const handleResize = () => {
       const isMobile = window.innerWidth <= 900;
       const cardWidth = isMobile ? 350 : 500;
-      const scale = 0.35;
+      const scale = isMobile ? 0.3 : 0.35;
       const scaledSize = cardWidth * scale;
       
-      const paddingTop = isMobile ? 8 : 10;
-      const paddingLeft = isMobile ? 20 : 35;
+      const paddingTop = isMobile ? 6 : 10;
+      const paddingLeft = isMobile ? 16 : 35;
       
       const targetXCenter = paddingLeft + (scaledSize / 2);
       const targetYCenter = paddingTop + (scaledSize / 2);
@@ -133,8 +133,11 @@ function App() {
 
   const { scrollY } = useScroll();
 
+  const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 900;
+  const targetScale = isMobileView ? 0.3 : 0.35;
+
   // Transformed values for the cap animation (Section 1 progress)
-  const capScale = useTransform(scrollYProgress1, RANGE_0_1, SCALE_RANGE);
+  const capScale = useTransform(scrollYProgress1, RANGE_0_1, [1, targetScale]);
   
   // Cap spins (rotate Z) on scroll
   const capRotateZ = useTransform(scrollYProgress1, RANGE_0_1, ROTATE_RANGE);

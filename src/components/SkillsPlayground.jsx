@@ -33,6 +33,7 @@ const capImages = [
 export default function SkillsPlayground() {
   const [positions, setPositions] = useState([]);
   const [isGathered, setIsGathered] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -62,12 +63,32 @@ export default function SkillsPlayground() {
     };
   }, [hoveredCapIndex, mouseX, mouseY]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (canvasRef.current) {
+        setDimensions({
+          width: canvasRef.current.clientWidth,
+          height: canvasRef.current.clientHeight
+        });
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const isAnyDragging = positions.some(p => p.isDragActive);
   const showPill = hoveredCapIndex !== null && !isAnyDragging;
 
-  const generateRandomPositions = (gathered = false) => {
+  const generateRandomPositions = (gathered = false, customWidth = null) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-    return capImages.map((_, i) => {
+    const canvasWidth = customWidth || dimensions.width || (isMobile ? 320 : 900);
+    return capImages.map((imgName, i) => {
+      const isPicsart = imgName.startsWith('Picsart');
+      const capWidth = isPicsart ? (isMobile ? 105 : 160) : (isMobile ? 140 : 210);
+      const paddingVal = isMobile ? 20 : 40;
+      const maxOffset = Math.max(0, canvasWidth / 2 - capWidth / 2 - paddingVal);
+
       if (gathered) {
         // Gather them into a neat grid
         const cols = isMobile ? 2 : 4;
@@ -89,9 +110,8 @@ export default function SkillsPlayground() {
         };
       } else {
         // Scatter randomly under the skills heading inside the card
-        const xRange = isMobile ? 90 : 360;
         const yRange = isMobile ? 550 : 780;
-        const rx = (Math.random() - 0.5) * xRange * 2;
+        const rx = (Math.random() - 0.5) * maxOffset * 2;
         const ry = Math.random() * yRange + 50;
         const rRotate = (Math.random() - 0.5) * 60; // -30 to 30 deg
         return {
@@ -106,7 +126,12 @@ export default function SkillsPlayground() {
   };
 
   useEffect(() => {
-    setPositions(generateRandomPositions(false));
+    if (canvasRef.current) {
+      const w = canvasRef.current.clientWidth;
+      const h = canvasRef.current.clientHeight;
+      setDimensions({ width: w, height: h });
+      setPositions(generateRandomPositions(false, w));
+    }
   }, []);
 
   const handleScatter = () => {
@@ -118,6 +143,10 @@ export default function SkillsPlayground() {
     setPositions(generateRandomPositions(true));
     setIsGathered(true);
   };
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const canvasWidth = dimensions.width || (isMobile ? 320 : 900);
+  const canvasHeight = dimensions.height || (isMobile ? 1350 : 1100);
 
   return (
     <div className="skills-playground" ref={containerRef}>
@@ -143,13 +172,27 @@ export default function SkillsPlayground() {
           const pos = positions[i];
           if (!pos) return null;
           const isPicsart = imgName.startsWith('Picsart');
+          const capWidth = isPicsart ? (isMobile ? 105 : 160) : (isMobile ? 140 : 210);
+          const capHeight = isPicsart ? (isMobile ? 105 : 160) : (isMobile ? 140 : 210);
+          const paddingVal = isMobile ? 20 : 40;
+
+          const dragLeft = -canvasWidth / 2 + capWidth / 2 + paddingVal;
+          const dragRight = canvasWidth / 2 - capWidth / 2 - paddingVal;
+          const dragTop = paddingVal;
+          const dragBottom = canvasHeight - capHeight - paddingVal;
+
           return (
             <motion.div
               key={imgName}
               className={`draggable-cap${isPicsart ? ' picsart-cap' : ''}`}
               drag
               dragMomentum={false}
-              dragConstraints={canvasRef}
+              dragConstraints={{
+                left: dragLeft,
+                right: dragRight,
+                top: dragTop,
+                bottom: dragBottom
+              }}
               dragElastic={0.1}
               animate={{
                 x: pos.x,
@@ -185,25 +228,20 @@ export default function SkillsPlayground() {
                   const canvasElement = canvasRef.current;
                   if (!canvasElement) return prev;
 
-                  const canvasWidth = canvasElement.clientWidth;
-                  const canvasHeight = canvasElement.clientHeight;
-
-                  const isMobile = window.innerWidth <= 768;
-                  const capWidth = isPicsart ? (isMobile ? 105 : 160) : (isMobile ? 140 : 210);
-                  const capHeight = isPicsart ? (isMobile ? 105 : 160) : (isMobile ? 140 : 210);
-                  const paddingVal = isMobile ? 20 : 40;
+                  const canvasWidthVal = canvasElement.clientWidth;
+                  const canvasHeightVal = canvasElement.clientHeight;
 
                   // Calculate target release coordinates
                   let targetX = next[i].x + info.offset.x;
                   let targetY = next[i].y + info.offset.y;
 
                   // Clamp to canvas borders (taking padding and cap dimensions into account)
-                  const minX = -canvasWidth / 2 + (capWidth / 2) + paddingVal;
-                  const maxX = canvasWidth / 2 - (capWidth / 2) - paddingVal;
+                  const minX = -canvasWidthVal / 2 + (capWidth / 2) + paddingVal;
+                  const maxX = canvasWidthVal / 2 - (capWidth / 2) - paddingVal;
                   targetX = Math.max(minX, Math.min(maxX, targetX));
 
                   const minY = paddingVal;
-                  const maxY = canvasHeight - capHeight - paddingVal;
+                  const maxY = canvasHeightVal - capHeight - paddingVal;
                   targetY = Math.max(minY, Math.min(maxY, targetY));
 
                   next[i] = {

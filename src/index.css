@@ -54,6 +54,8 @@
 html {
   scroll-behavior: smooth;
   background-color: var(--bg-cream);
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -796,12 +798,21 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
   height: auto;
   overflow: visible;
   mix-blend-mode: multiply;
   pointer-events: none;
+}
+
+.torii-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  transform: translateY(120px);
 }
 
 .torii-heading-overlay {
@@ -1008,13 +1019,23 @@ body {
     flex: none;
   }
   
+  .torii-heading-overlay {
+    top: -28%;
+  }
+
   .torii-form-overlay {
-    top: 28%;
+    top: 8%;
     width: 85%;
   }
 
+  .section-five {
+    justify-content: flex-end;
+    padding-bottom: 50px;
+  }
+
   .torii-image {
-    transform: translateY(175px);
+    transform: translateY(70px) scale(1.65);
+    transform-origin: bottom center;
   }
 
   .torii-socials-overlay {
@@ -1037,14 +1058,7 @@ body {
   }
 }
 
-.torii-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  user-select: none;
-  pointer-events: none;
-  transform: translateY(120px);
-}
+
 
 .nav-fixed-container {
   position: fixed;
@@ -1191,6 +1205,13 @@ body {
     width: 350px;
     height: 350px;
   }
+}
+
+#skills-caps,
+#projects-section-caps {
+  position: relative;
+  z-index: 5;
+  width: 100%;
 }
 
 /* ==========================================================================
@@ -1343,6 +1364,9 @@ body {
   }
   .cap-hover-pill {
     display: none !important;
+  }
+  .takeover-divider {
+    margin-top: 190px;
   }
 }
 
