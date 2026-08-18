@@ -2,21 +2,21 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 
 // Assets
-import capFrontImg from './assets/Ry cap.png';
-import capBackImg from './assets/cap_back.png';
-import logoRevealImg from './assets/logo_reveal.png';
-import takeoverHeadingImg from './assets/takeover_heading.png';
-import takeoverSignatureImg from './assets/takeover_signature.png';
-import takeoverExperienceImg from './assets/takeover_experience.png';
+import capFrontImg from './assets/Ry cap.webp';
+import capBackImg from './assets/cap_back.webp';
+import logoRevealImg from './assets/logo_reveal.webp';
+import takeoverHeadingImg from './assets/takeover_heading.webp';
+import takeoverSignatureImg from './assets/takeover_signature.webp';
+import takeoverExperienceImg from './assets/takeover_experience.webp';
 import SkillsPlayground from './components/SkillsPlayground';
-import takeoverFooterGraphicImg from './assets/takeover_footer_graphic.png';
+import takeoverFooterGraphicImg from './assets/takeover_footer_graphic.webp';
 import InternshipCards from './components/InternshipCards';
-import projectsHeadingImg from './assets/projects_heading.png';
-import folderIconImg from './assets/folder_icon.png';
-import takeoverProjectsFooterImg from './assets/takeover_projects_footer.png';
-import toriiGateImg from './assets/torii_gate.png';
-import contactHeadingNewImg from './assets/contact_heading_new.png';
-import navImg from './assets/nav.png';
+import projectsHeadingImg from './assets/projects_heading.webp';
+import folderIconImg from './assets/folder_icon.webp';
+import takeoverProjectsFooterImg from './assets/takeover_projects_footer.webp';
+import toriiGateImg from './assets/torii_gate.webp';
+import contactHeadingNewImg from './assets/contact_heading_new.webp';
+import navImg from './assets/nav.webp';
 
 // Components
 import ProjectDetailsModal from './components/ProjectDetailsModal';
@@ -292,9 +292,9 @@ function App() {
             }}
           >
             {/* Front of the cap */}
-            <img src={capFrontImg} className="cap-front" alt="Ry Cap Front" />
+            <img src={capFrontImg} className="cap-front" alt="Ry Cap Front" fetchPriority="high" decoding="async" />
             {/* Back of the cap */}
-            <img src={capBackImg} className="cap-back" alt="Ry Cap Back" />
+            <img src={capBackImg} className="cap-back" alt="Ry Cap Back" fetchPriority="high" decoding="async" />
           </motion.div>
         </motion.div>
       </div>
@@ -313,7 +313,7 @@ function App() {
             scale: logoScale,
           }}
         >
-          <img src={logoRevealImg} className="logo-reveal-image" alt="ROHIT YERRARAPU" />
+          <img src={logoRevealImg} className="logo-reveal-image" alt="ROHIT YERRARAPU" decoding="async" />
           <p className="logo-reveal-subtitle">Aspiring AI Engineer & Creative Builder.</p>
         </motion.div>
       </section>
@@ -332,6 +332,8 @@ function App() {
                 src={takeoverHeadingImg} 
                 className="takeover-card-heading-img" 
                 alt="Takeover Heading"
+                loading="lazy"
+                decoding="async"
               />
               <div 
                 className="takeover-card-bio"
@@ -354,6 +356,8 @@ function App() {
                 src={takeoverSignatureImg} 
                 className="takeover-card-signature-img" 
                 alt="Signature" 
+                loading="lazy"
+                decoding="async"
               />
               <div className="takeover-card-education">
                 <div className="education-row">
@@ -395,6 +399,8 @@ function App() {
                   src={takeoverExperienceImg} 
                   className="takeover-card-experience-img" 
                   alt="Experience" 
+                  loading="lazy"
+                  decoding="async"
                 />
                 <SkillsPlayground />
               </div>
@@ -403,6 +409,8 @@ function App() {
                 src={takeoverFooterGraphicImg} 
                 className="takeover-card-footer-graphic-img" 
                 alt="Footer Graphic" 
+                loading="lazy"
+                decoding="async"
               />
               <InternshipCards />
               <hr className="takeover-divider" style={{ margin: '40px auto 0 auto' }} />
@@ -411,6 +419,8 @@ function App() {
                   src={projectsHeadingImg} 
                   className="takeover-card-projects-heading-img" 
                   alt="Projects Heading" 
+                  loading="lazy"
+                  decoding="async"
                 />
                 <p className="projects-instruction-text">
                   CLICK THE FOLDER TO SEE THE PROJECT
@@ -435,6 +445,8 @@ function App() {
                         src={folderIconImg} 
                         className="project-folder-icon" 
                         alt="Folder 01" 
+                        loading="lazy"
+                        decoding="async"
                       />
                     </motion.div>
   
@@ -451,6 +463,8 @@ function App() {
                         src={folderIconImg} 
                         className="project-folder-icon" 
                         alt="Folder 02" 
+                        loading="lazy"
+                        decoding="async"
                       />
                     </motion.div>
   
@@ -467,6 +481,8 @@ function App() {
                         src={folderIconImg} 
                         className="project-folder-icon" 
                         alt="Folder 03" 
+                        loading="lazy"
+                        decoding="async"
                       />
                     </motion.div>
   
@@ -483,6 +499,8 @@ function App() {
                         src={folderIconImg} 
                         className="project-folder-icon" 
                         alt="Folder 04" 
+                        loading="lazy"
+                        decoding="async"
                       />
                     </motion.div>
                   </div>
@@ -493,6 +511,8 @@ function App() {
                 src={takeoverProjectsFooterImg} 
                 className="takeover-card-projects-footer-img" 
                 alt="Projects Footer" 
+                loading="lazy"
+                decoding="async"
               />
               <CurrentlyExploring />
             </div>
@@ -515,6 +535,8 @@ function App() {
                 src={contactHeadingNewImg} 
                 className="torii-heading-overlay" 
                 alt="Contact" 
+                loading="lazy"
+                decoding="async"
               />
 
               <div className="torii-form-overlay">
@@ -599,6 +621,8 @@ function App() {
                 src={toriiGateImg} 
                 alt="Torii Gate" 
                 className="torii-image" 
+                loading="lazy"
+                decoding="async"
               />
             </motion.div>
           </div>

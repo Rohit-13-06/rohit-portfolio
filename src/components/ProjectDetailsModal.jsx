@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import folderIconImg from '../assets/folder_icon.png';
+import folderIconImg from '../assets/folder_icon.webp';
 
 const projectsData = [
   {
@@ -222,6 +222,7 @@ export default function ProjectDetailsModal({ projectIndex, onClose }) {
             src={folderIconImg} 
             className="project-modal-folder-icon" 
             alt="Project Folder"
+            decoding="async"
             transition={{ type: "spring", stiffness: 150, damping: 20 }}
           />
           <div className="project-modal-title-section">
