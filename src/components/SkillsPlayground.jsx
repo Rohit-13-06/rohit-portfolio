@@ -101,12 +101,9 @@ export default function SkillsPlayground() {
         const startX = -gridWidth / 2 + colWidth / 2;
         const startY = isMobile ? 20 : 50; // Margin from top of the playground canvas to shift grid down
         
-        const isPythonCap = imgName.includes('Picsart_26-06-20_17-14-18-076');
-        const pythonYOffset = isPythonCap ? (isMobile ? -15 : -25) : 0;
-        
         return {
           x: startX + col * colWidth,
-          y: startY + row * rowHeight + pythonYOffset,
+          y: startY + row * rowHeight,
           rotate: 0,
           zIndex: 5,
           isDragActive: false
