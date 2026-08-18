@@ -102,7 +102,7 @@ export default function SkillsPlayground() {
         const startY = isMobile ? 20 : 50; // Margin from top of the playground canvas to shift grid down
         
         const isPythonCap = imgName.includes('Picsart_26-06-20_17-14-18-076');
-        const pythonYOffset = isPythonCap ? (isMobile ? 45 : 70) : 0;
+        const pythonYOffset = isPythonCap ? (isMobile ? -15 : -25) : 0;
         
         return {
           x: startX + col * colWidth,
@@ -113,11 +113,9 @@ export default function SkillsPlayground() {
         };
       } else {
         // Scatter randomly under the skills heading inside the card
-        const isPythonCap = imgName.includes('Picsart_26-06-20_17-14-18-076');
         const yRange = isMobile ? 550 : 780;
         const rx = (Math.random() - 0.5) * maxOffset * 2;
-        const baseRy = Math.random() * yRange + 50;
-        const ry = isPythonCap ? Math.min(canvasHeight - (isMobile ? 160 : 230), baseRy + (isMobile ? 60 : 100)) : baseRy;
+        const ry = Math.random() * yRange + 50;
         const rRotate = (Math.random() - 0.5) * 60; // -30 to 30 deg
         return {
           x: rx,
